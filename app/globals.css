@@ -1,0 +1,235 @@
+@import "tailwindcss";
+
+/* ===========================
+   FLOWBOARD DESIGN SYSTEM
+   =========================== */
+
+:root {
+  /* Brand Colors */
+  --fb-primary: #1a56db;
+  --fb-primary-hover: #1648b8;
+  --fb-primary-light: #e8edfb;
+  --fb-primary-container: #4878fd;
+  --fb-primary-dim: #0047c6;
+
+  /* Neutrals */
+  --fb-black: #0d0f14;
+  --fb-gray-900: #1a1d26;
+  --fb-gray-800: #2e323d;
+  --fb-gray-700: #3d4150;
+  --fb-gray-600: #5b5f6b;
+  --fb-gray-500: #777a87;
+  --fb-gray-400: #9ea1ad;
+  --fb-gray-300: #aeb2bf;
+  --fb-gray-200: #d6d9e8;
+  --fb-gray-100: #e5e8f4;
+  --fb-gray-50: #f2f3fd;
+  --fb-white: #ffffff;
+
+  /* Surfaces */
+  --fb-surface: #f9f9ff;
+  --fb-surface-dim: #d6d9e8;
+  --fb-surface-container: #ecedf9;
+  --fb-surface-container-low: #f2f3fd;
+  --fb-surface-container-high: #e5e8f4;
+  --fb-surface-container-highest: #dfe2f0;
+
+  /* Semantic */
+  --fb-success: #34a853;
+  --fb-warning: #fbbc04;
+  --fb-error: #a8364b;
+
+  /* Outline */
+  --fb-outline: #777a87;
+  --fb-outline-variant: #aeb2bf;
+
+  /* Spacing */
+  --fb-space-xs: 4px;
+  --fb-space-sm: 8px;
+  --fb-space-md: 16px;
+  --fb-space-lg: 24px;
+  --fb-space-xl: 32px;
+  --fb-space-2xl: 48px;
+  --fb-space-3xl: 64px;
+  --fb-space-4xl: 96px;
+
+  /* Shadows */
+  --fb-shadow-sm: 0 1px 2px rgba(13, 15, 20, 0.06);
+  --fb-shadow-md: 0 4px 12px rgba(13, 15, 20, 0.08);
+  --fb-shadow-lg: 0 8px 32px rgba(13, 15, 20, 0.12);
+  --fb-shadow-xl: 0 16px 48px rgba(13, 15, 20, 0.16);
+
+  /* Transitions */
+  --fb-transition: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  --fb-transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@theme inline {
+  --color-background: var(--fb-surface);
+  --color-foreground: var(--fb-gray-800);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  --color-fb-primary: var(--fb-primary);
+  --color-fb-primary-hover: var(--fb-primary-hover);
+  --color-fb-primary-light: var(--fb-primary-light);
+  --color-fb-primary-container: var(--fb-primary-container);
+  --color-fb-primary-dim: var(--fb-primary-dim);
+  --color-fb-black: var(--fb-black);
+  --color-fb-gray-900: var(--fb-gray-900);
+  --color-fb-gray-800: var(--fb-gray-800);
+  --color-fb-gray-700: var(--fb-gray-700);
+  --color-fb-gray-600: var(--fb-gray-600);
+  --color-fb-gray-500: var(--fb-gray-500);
+  --color-fb-gray-400: var(--fb-gray-400);
+  --color-fb-gray-300: var(--fb-gray-300);
+  --color-fb-gray-200: var(--fb-gray-200);
+  --color-fb-gray-100: var(--fb-gray-100);
+  --color-fb-gray-50: var(--fb-gray-50);
+  --color-fb-white: var(--fb-white);
+  --color-fb-surface: var(--fb-surface);
+  --color-fb-surface-dim: var(--fb-surface-dim);
+  --color-fb-surface-container: var(--fb-surface-container);
+  --color-fb-success: var(--fb-success);
+  --color-fb-warning: var(--fb-warning);
+  --color-fb-error: var(--fb-error);
+  --color-fb-outline: var(--fb-outline);
+  --color-fb-outline-variant: var(--fb-outline-variant);
+}
+
+/* ===========================
+   BASE STYLES
+   =========================== */
+body {
+  background: var(--fb-surface);
+  color: var(--fb-gray-800);
+  font-family: "DM Sans", var(--font-geist-sans), sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Geist", var(--font-geist-sans), sans-serif;
+  color: var(--fb-black);
+}
+
+/* ===========================
+   UTILITY PATTERNS
+   =========================== */
+
+/* Dot grid background */
+.dot-pattern {
+  background-image: radial-gradient(circle, var(--fb-outline-variant) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Hero gradient overlay */
+.hero-gradient {
+  background: linear-gradient(180deg, rgba(232, 237, 251, 0.6) 0%, rgba(249, 249, 255, 0) 100%);
+}
+
+/* Glass morphism */
+.glass {
+  background: rgba(249, 249, 255, 0.72);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(174, 178, 191, 0.2);
+}
+
+.glass-dark {
+  background: rgba(13, 15, 20, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(174, 178, 191, 0.1);
+}
+
+/* ===========================
+   ANIMATIONS
+   =========================== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(var(--rotate, 0deg)); }
+  50% { transform: translateY(-12px) rotate(var(--rotate, 0deg)); }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.8); opacity: 0.5; }
+  80%, 100% { transform: scale(2); opacity: 0; }
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.animate-slideInRight {
+  animation: slideInRight 0.5s ease-out forwards;
+}
+
+/* Stagger delays for children */
+.stagger-1 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.2s; }
+.stagger-3 { animation-delay: 0.3s; }
+.stagger-4 { animation-delay: 0.4s; }
+
+/* ===========================
+   SCROLLBAR STYLING
+   =========================== */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--fb-gray-300);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--fb-gray-500);
+}
+
+/* ===========================
+   SELECTION
+   =========================== */
+::selection {
+  background: var(--fb-primary-container);
+  color: var(--fb-white);
+}
