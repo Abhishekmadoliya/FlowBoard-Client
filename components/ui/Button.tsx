@@ -8,6 +8,7 @@ interface ButtonProps {
   className?: string;
   onClick?: () => void;
   type?: "button" | "submit";
+  disabled?: boolean;
   icon?: React.ReactNode;
   id?: string;
 }
@@ -20,6 +21,7 @@ export default function Button({
   className = "",
   onClick,
   type = "button",
+  disabled = false,
   icon,
   id,
 }: ButtonProps) {
@@ -54,7 +56,13 @@ export default function Button({
   }
 
   return (
-    <button type={type} className={classes} onClick={onClick} id={id}>
+    <button
+      type={type}
+      className={`${classes} ${disabled ? "opacity-50 cursor-not-allowed pointer-events-none" : ""}`}
+      onClick={onClick}
+      disabled={disabled}
+      id={id}
+    >
       {icon}
       {children}
     </button>

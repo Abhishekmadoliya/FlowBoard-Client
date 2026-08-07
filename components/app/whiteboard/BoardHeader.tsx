@@ -1,22 +1,51 @@
 "use client";
 
+import { useRef, useCallback, useEffect } from "react";
 import Link from "next/link";
 
 interface BoardHeaderProps {
   boardTitle?: string;
   workspace?: string;
   team?: string;
+  onRename?: (name: string) => void;
 }
 
 export default function BoardHeader({
-  boardTitle = "Q3 Planning — Sprint 4",
+  boardTitle = "Untitled",
   workspace = "Workspaces",
   team = "Product Team",
+  onRename,
 }: BoardHeaderProps) {
+  const titleRef = useRef<HTMLHeadingElement>(null);
+
+  const handleBlur = useCallback(() => {
+    if (titleRef.current && onRename) {
+      const newName = titleRef.current.textContent?.trim() || "Untitled";
+      if (newName !== boardTitle) {
+        onRename(newName);
+      }
+    }
+  }, [boardTitle, onRename]);
+
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        titleRef.current?.blur();
+      }
+    },
+    []
+  );
+
+  useEffect(() => {
+    if (titleRef.current && titleRef.current.textContent !== boardTitle) {
+      titleRef.current.textContent = boardTitle;
+    }
+  }, [boardTitle]);
+
   return (
     <div id="board-header" className="absolute top-4 left-4 z-30 flex items-center gap-3">
-      {/* Logo mark */}
-      <Link href="/" className="flex-shrink-0">
+      <Link href="/app" className="flex-shrink-0">
         <svg
           width="32"
           height="32"
@@ -36,17 +65,18 @@ export default function BoardHeader({
       </Link>
 
       <div className="flex flex-col">
-        {/* Breadcrumb */}
         <div className="flex items-center gap-1 text-xs text-fb-gray-400">
-          <span>{workspace}</span>
+          <Link href="/app" className="hover:text-fb-primary transition-colors">{workspace}</Link>
           <span>›</span>
           <span>{team}</span>
         </div>
-        {/* Board title */}
         <h1
+          ref={titleRef}
           className="text-sm font-semibold text-fb-black cursor-text hover:bg-fb-gray-50 px-1 -ml-1 rounded transition-colors"
           contentEditable
           suppressContentEditableWarning
+          onBlur={handleBlur}
+          onKeyDown={handleKeyDown}
         >
           {boardTitle}
         </h1>

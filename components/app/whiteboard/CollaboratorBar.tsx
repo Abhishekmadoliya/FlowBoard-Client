@@ -6,6 +6,8 @@ import Button from "@/components/ui/Button";
 interface CollaboratorBarProps {
   collaborators?: Array<{ name: string; color: string }>;
   overflowCount?: number;
+  onShare?: () => void;
+  onPresent?: () => void;
 }
 
 export default function CollaboratorBar({
@@ -16,6 +18,8 @@ export default function CollaboratorBar({
     { name: "James Wright", color: "ring-rose-500" },
   ],
   overflowCount = 2,
+  onShare,
+  onPresent,
 }: CollaboratorBarProps) {
   return (
     <div id="collaborator-bar" className="absolute top-4 right-4 z-30 flex items-center gap-3">
@@ -38,7 +42,7 @@ export default function CollaboratorBar({
       </div>
 
       {/* Share button */}
-      <Button variant="outline" size="sm" className="text-xs">
+      <Button variant="outline" size="sm" className="text-xs" onClick={onShare}>
         <svg
           width="14"
           height="14"
@@ -59,18 +63,9 @@ export default function CollaboratorBar({
       </Button>
 
       {/* Present button */}
-      <Button size="sm" className="text-xs">
+      <Button size="sm" className="text-xs" onClick={onPresent}>
         Present
       </Button>
-
-      {/* More options */}
-      <button className="w-8 h-8 flex items-center justify-center rounded-lg text-fb-gray-500 hover:bg-fb-gray-100 transition-colors">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-          <circle cx="12" cy="5" r="1.5" />
-          <circle cx="12" cy="12" r="1.5" />
-          <circle cx="12" cy="19" r="1.5" />
-        </svg>
-      </button>
     </div>
   );
 }

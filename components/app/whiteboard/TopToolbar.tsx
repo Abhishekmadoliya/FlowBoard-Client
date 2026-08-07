@@ -1,9 +1,15 @@
 "use client";
 
+import { useRef } from "react";
+
 interface TopToolbarProps {
   activeTool?: string;
   onToolChange?: (tool: string) => void;
   zoom?: number;
+  onZoomIn?: () => void;
+  onZoomOut?: () => void;
+  onImageSelect?: (file: File) => void;
+  onOpenComponents?: () => void;
 }
 
 const tools = [
@@ -20,54 +26,104 @@ const tools = [
   { id: "components", label: "Components", icon: <><rect x="3" y="3" width="7" height="7" rx="1" /><rect x="14" y="3" width="7" height="7" rx="1" /><rect x="14" y="14" width="7" height="7" rx="1" /><rect x="3" y="14" width="7" height="7" rx="1" /></> },
 ];
 
+function isToolActive(toolId: string, activeTool: string): boolean {
+  if (toolId === activeTool) return true;
+  if (toolId === "sticky" && (activeTool === "note" || activeTool === "sticky")) return true;
+  if (toolId === "shape" && (activeTool === "geo" || activeTool === "rectangle")) return true;
+  if (toolId === "connector" && (activeTool === "arrow" || activeTool === "connector")) return true;
+  if (toolId === "pen" && (activeTool === "draw" || activeTool === "pen")) return true;
+  return false;
+}
+
 export default function TopToolbar({
   activeTool = "select",
   onToolChange,
-  zoom = 87,
+  zoom = 100,
+  onZoomIn,
+  onZoomOut,
+  onImageSelect,
+  onOpenComponents,
 }: TopToolbarProps) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleToolClick = (id: string) => {
+    if (id === "image") {
+      fileInputRef.current?.click();
+    } else if (id === "components") {
+      onOpenComponents?.();
+    } else {
+      onToolChange?.(id);
+    }
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file && onImageSelect) {
+      onImageSelect(file);
+    }
+    e.target.value = "";
+  };
+
   return (
     <div
       id="top-toolbar"
       className="absolute top-4 left-1/2 -translate-x-1/2 z-30 glass rounded-full shadow-lg px-2 py-1.5 flex items-center gap-0.5"
     >
-      {tools.map((tool) => (
-        <button
-          key={tool.id}
-          title={tool.label}
-          onClick={() => onToolChange?.(tool.id)}
-          className={`w-9 h-9 flex items-center justify-center rounded-full transition-all duration-150 ${
-            activeTool === tool.id
-              ? "bg-fb-primary text-white shadow-sm"
-              : "text-fb-gray-600 hover:bg-fb-gray-100 hover:text-fb-gray-800"
-          }`}
-        >
-          <svg
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        className="hidden"
+        onChange={handleFileChange}
+      />
+
+      {tools.map((tool) => {
+        const active = isToolActive(tool.id, activeTool);
+        return (
+          <button
+            key={tool.id}
+            title={tool.label}
+            onClick={() => handleToolClick(tool.id)}
+            className={`w-9 h-9 flex items-center justify-center rounded-full transition-all duration-150 ${
+              active
+                ? "bg-fb-primary text-white shadow-sm"
+                : "text-fb-gray-600 hover:bg-fb-gray-100 hover:text-fb-gray-800"
+            }`}
           >
-            {tool.icon}
-          </svg>
-        </button>
-      ))}
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              {tool.icon}
+            </svg>
+          </button>
+        );
+      })}
 
       {/* Separator */}
       <div className="w-px h-6 bg-fb-outline-variant/40 mx-1" />
 
       {/* Zoom controls */}
       <div className="flex items-center gap-1">
-        <button className="w-7 h-7 flex items-center justify-center rounded-full text-fb-gray-500 hover:bg-fb-gray-100 transition-colors text-sm font-medium">
+        <button
+          onClick={onZoomOut}
+          className="w-7 h-7 flex items-center justify-center rounded-full text-fb-gray-500 hover:bg-fb-gray-100 transition-colors text-sm font-medium"
+        >
           −
         </button>
         <span className="text-xs font-medium text-fb-gray-600 min-w-[36px] text-center">
           {zoom}%
         </span>
-        <button className="w-7 h-7 flex items-center justify-center rounded-full text-fb-gray-500 hover:bg-fb-gray-100 transition-colors text-sm font-medium">
+        <button
+          onClick={onZoomIn}
+          className="w-7 h-7 flex items-center justify-center rounded-full text-fb-gray-500 hover:bg-fb-gray-100 transition-colors text-sm font-medium"
+        >
           +
         </button>
       </div>

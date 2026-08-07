@@ -1,9 +1,10 @@
-import Whiteboard from "@/components/app/whiteboard/Whiteboard"
+import AppShell from "@/components/app/AppShell";
+import BoardGrid from "@/components/app/dashboard/BoardGrid";
 
-export default function App() {
-    return (
-        <>
-            <div className="h-screen w-screen overflow-hidden">  <Whiteboard /> </div>
-        </>
-    )
+export default function AppPage() {
+  return (
+    <AppShell>
+      <BoardGrid />
+    </AppShell>
+  );
 }

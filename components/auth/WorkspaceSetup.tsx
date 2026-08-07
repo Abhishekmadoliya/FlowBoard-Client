@@ -1,7 +1,10 @@
 "use client";
 
+import { useState, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
+import { useAppStore } from "@/lib/store/useAppStore";
 
 const teamSizes = ["Just me", "2–10", "11–50", "50+"];
 const useCases = [
@@ -13,6 +16,23 @@ const useCases = [
 ];
 
 export default function WorkspaceSetup() {
+  const router = useRouter();
+  const user = useAppStore((s) => s.user);
+  const setUser = useAppStore((s) => s.setUser);
+  const [workspaceName, setWorkspaceName] = useState("");
+
+  const handleSubmit = useCallback(
+    (e: React.FormEvent) => {
+      e.preventDefault();
+      const name = workspaceName.trim() || "My Workspace";
+      if (user) {
+        setUser({ ...user, workspaceName: name });
+      }
+      router.push("/invite");
+    },
+    [workspaceName, user, setUser, router]
+  );
+
   return (
     <div id="workspace-setup">
       <h2
@@ -25,15 +45,16 @@ export default function WorkspaceSetup() {
         Customize your team&apos;s home base.
       </p>
 
-      <form className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-6">
         <Input
           label="Workspace name"
           id="workspace-name"
           name="workspace"
           placeholder="Acme Inc."
+          value={workspaceName}
+          onChange={(e) => setWorkspaceName(e.target.value)}
         />
 
-        {/* Team size */}
         <div>
           <label className="text-sm font-semibold text-fb-gray-800 block mb-2">
             Team size
@@ -55,7 +76,6 @@ export default function WorkspaceSetup() {
           </div>
         </div>
 
-        {/* Use case */}
         <div>
           <label className="text-sm font-semibold text-fb-gray-800 block mb-2">
             How will you use Flowboard?
